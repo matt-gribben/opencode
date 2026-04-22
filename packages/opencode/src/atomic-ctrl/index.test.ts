@@ -36,7 +36,7 @@ async function tempWorktree() {
 const sample: FakeAtomicBootstrap = {
   sessionBootstrap: {
     id: "fake-bootstrap",
-    title: "Fake Atomic Session",
+    title: "Atomic Session",
     source: "fixtures",
   },
   goals: [{ id: "goal-a", title: "Goal A", status: "active" }],
@@ -65,12 +65,12 @@ const sample: FakeAtomicBootstrap = {
       workspaceLabel: "workspace test-bed",
     },
     stats: [{ id: "jobs", label: "Jobs", value: "2", sparkline: [1, 2, 3] }],
-    eventStream: [{ id: "evt-a", timestamp: "12:00", actor: "planner", message: "queued fake work" }],
-    attention: [{ id: "job-a", severity: "high", title: "Resolve fake job" }],
+    eventStream: [{ id: "evt-a", timestamp: "12:00", actor: "planner", message: "queued work" }],
+    attention: [{ id: "job-a", severity: "high", title: "Resolve job" }],
   },
 }
 
-describe("atomic-ctrl fake control plane", () => {
+describe("atomic-ctrl control plane", () => {
   test("reads bootstrap fixtures and creates per-session state", async () => {
     const worktree = await tempWorktree()
     await Filesystem.writeJson(paths(worktree).bootstrap, sample)

@@ -524,7 +524,7 @@ export async function bootstrapSessionFromWorkspace(worktree: string, workspaceI
     const session = store.sessions[sessionID] ?? fromBootstrapSession(sessionID, bootstrap)
 
     // Home-dashboard workspace state is the source of truth for newly created
-    // sessions. Apply it even if the session already has default fake Atomic
+    // sessions. Apply it even if the session already has default Atomic
     // state, so an earlier read cannot lock in stale defaults.
     session.currentGoalId = workspace.currentGoalId
     session.currentProjectId = workspace.currentProjectId

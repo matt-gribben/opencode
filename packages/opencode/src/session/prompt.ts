@@ -1413,7 +1413,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
                 .publish(Session.Event.Error, {
                   sessionID,
                   error: new NamedError.Unknown({
-                    message: `Failed to load fake Atomic control-plane state: ${message}`,
+                    message: `Failed to load Atomic control-plane state: ${message}`,
                   }).toObject(),
                 })
                 .pipe(Effect.as(undefined))

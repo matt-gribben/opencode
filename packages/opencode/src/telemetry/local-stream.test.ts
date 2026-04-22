@@ -117,7 +117,7 @@ describe("local telemetry normalizer", () => {
     expect(denied[0]?.type).toBe("tool_call_denied")
   })
 
-  test("maps fake work item transitions", () => {
+  test("maps work item transitions", () => {
     const rows = normalize("atomic.telemetry.fake_work_item_transitioned", {
       workspaceID: "workspace-1",
       scope: "workspace",

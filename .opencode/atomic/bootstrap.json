@@ -1,8 +1,8 @@
 {
   "sessionBootstrap": {
-    "id": "fake-atomic-bootstrap",
-    "title": "Atomic-CTRL Fake Session",
-    "description": "Project-local fake control-plane bootstrap used to exercise integration shape for software engineering work.",
+    "id": "atomic-bootstrap",
+    "title": "Atomic-CTRL Session",
+    "description": "Project-local control-plane bootstrap used to exercise integration shape for software engineering work.",
     "source": "fixtures"
   },
   "goals": [
@@ -102,7 +102,7 @@
       "projectId": "09",
       "title": "Harden tool approval and permission gating",
       "status": "running",
-      "summary": "Stabilize fake capability grants, approval prompts, and runtime permission overlays."
+      "summary": "Stabilize capability grants, approval prompts, and runtime permission overlays."
     },
     {
       "id": "210",
@@ -190,9 +190,9 @@
     {
       "id": "JOB-7148",
       "objectiveId": "211",
-      "title": "Allow edit permissions under fake grant profile",
+      "title": "Allow edit permissions under grant profile",
       "status": "completed",
-      "summary": "Validate that edit operations are permitted under the fake Atomic control-plane ruleset.",
+      "summary": "Validate that edit operations are permitted under the Atomic control-plane ruleset.",
       "agent": "analyst",
       "priority": "urgent",
       "progress": 100,
@@ -203,7 +203,7 @@
     {
       "id": "JOB-7147",
       "objectiveId": "211",
-      "title": "Block web fetch under fake grant profile",
+      "title": "Block web fetch under grant profile",
       "status": "completed",
       "summary": "Verify that denied capabilities are constrained through the normal permission pipeline.",
       "agent": "analyst",
@@ -341,7 +341,7 @@
       "permission": "bash",
       "pattern": "*",
       "action": "ask",
-      "note": "Fake control plane requires review for shell commands."
+      "note": "control plane requires review for shell commands."
     },
     {
       "id": "grant-webfetch",
@@ -349,7 +349,7 @@
       "permission": "webfetch",
       "pattern": "*",
       "action": "deny",
-      "note": "Disabled in the fake profile to exercise real runtime gating."
+      "note": "Disabled in the profile to exercise real runtime gating."
     },
     {
       "id": "grant-task",
@@ -368,8 +368,8 @@
     },
     {
       "id": "approval-risk-check",
-      "title": "Approve risk callout for fake control-plane mode",
-      "summary": "Operator should confirm the fake-control-plane warning copy before closing the implementation task.",
+      "title": "Approve risk callout for control-plane mode",
+      "summary": "Operator should confirm the control-plane warning copy before closing the implementation task.",
       "status": "pending"
     }
   ],

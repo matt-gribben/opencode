@@ -90,7 +90,7 @@ function AtomicBrand(props: { api: TuiPluginApi; compact?: boolean }) {
         <b>ATOMIC CTRL</b>
       </text>
       <Show when={!props.compact}>
-        <text fg={ATOMIC_TEAL_SOFT}>fake control plane</text>
+        <text fg={ATOMIC_TEAL_SOFT}>control plane</text>
       </Show>
     </box>
   )
@@ -99,7 +99,7 @@ function AtomicBrand(props: { api: TuiPluginApi; compact?: boolean }) {
 async function openWorkDialog(api: TuiPluginApi, sessionID: string) {
   const items = await listAvailableWork(worktree(api), sessionID)
   if (items.length === 0) {
-    api.ui.toast({ variant: "info", message: "No fake Atomic work items available" })
+    api.ui.toast({ variant: "info", message: "No Atomic work items available" })
     return
   }
   const options: TuiDialogSelectOption<string>[] = items.map((item) => ({
@@ -117,7 +117,7 @@ async function openWorkDialog(api: TuiPluginApi, sessionID: string) {
         void selectWorkItem(worktree(api), sessionID, option.value)
           .then(() => {
             bump()
-            api.ui.toast({ variant: "success", message: "Updated fake Atomic work item" })
+            api.ui.toast({ variant: "success", message: "Updated Atomic work item" })
           })
           .catch((error) => {
             api.ui.toast({ variant: "error", message: error instanceof Error ? error.message : String(error) })
@@ -129,8 +129,8 @@ async function openWorkDialog(api: TuiPluginApi, sessionID: string) {
 
 function approvalActionDialog(api: TuiPluginApi, sessionID: string, approvalID: string, title: string) {
   const options: TuiDialogSelectOption<string>[] = [
-    { title: "Approve", value: "approve", description: "Mark this fake approval as approved" },
-    { title: "Reject", value: "reject", description: "Mark this fake approval as rejected" },
+    { title: "Approve", value: "approve", description: "Mark this approval as approved" },
+    { title: "Reject", value: "reject", description: "Mark this approval as rejected" },
   ]
   api.ui.dialog.replace(() => (
     <api.ui.DialogSelect
@@ -145,7 +145,7 @@ function approvalActionDialog(api: TuiPluginApi, sessionID: string, approvalID: 
         const task =
           option.value === "approve"
             ? approveItem(worktree(api), sessionID, approvalID)
-            : rejectItem(worktree(api), sessionID, approvalID, "Rejected in fake Atomic UI")
+            : rejectItem(worktree(api), sessionID, approvalID, "Rejected in Atomic UI")
         void task
           .then(() => {
             bump()
@@ -167,13 +167,13 @@ async function openApprovalsDialog(api: TuiPluginApi, sessionID: string) {
   const view = state ? toViewModel(state) : undefined
   const approvals = view?.approvals ?? []
   if (approvals.length === 0) {
-    api.ui.toast({ variant: "info", message: "No pending fake human approvals" })
+    api.ui.toast({ variant: "info", message: "No pending human approvals" })
     return
   }
   const options: TuiDialogSelectOption<string>[] = approvals.map((item) => ({
     title: item.title,
     value: item.id,
-    description: item.summary ?? "Pending fake human approval",
+    description: item.summary ?? "Pending human approval",
   }))
   api.ui.dialog.replace(() => (
     <api.ui.DialogSelect
@@ -190,8 +190,8 @@ async function openApprovalsDialog(api: TuiPluginApi, sessionID: string) {
 
 function failedWorkActionDialog(api: TuiPluginApi, sessionID: string, failureID: string, title: string) {
   const options: TuiDialogSelectOption<string>[] = [
-    { title: "Retry", value: "retry", description: "Mark this fake failed work item as retried" },
-    { title: "Clear", value: "clear", description: "Mark this fake failed work item as cleared" },
+    { title: "Retry", value: "retry", description: "Mark this failed work item as retried" },
+    { title: "Clear", value: "clear", description: "Mark this failed work item as cleared" },
   ]
   api.ui.dialog.replace(() => (
     <api.ui.DialogSelect
@@ -228,13 +228,13 @@ async function openFailedWorkDialog(api: TuiPluginApi, sessionID: string) {
   const view = state ? toViewModel(state) : undefined
   const failures = view?.failures ?? []
   if (failures.length === 0) {
-    api.ui.toast({ variant: "info", message: "No active fake failed work items" })
+    api.ui.toast({ variant: "info", message: "No active failed work items" })
     return
   }
   const options: TuiDialogSelectOption<string>[] = failures.map((item) => ({
     title: item.title,
     value: item.id,
-    description: item.summary ?? "Active fake failed work item",
+    description: item.summary ?? "Active failed work item",
   }))
   api.ui.dialog.replace(() => (
     <api.ui.DialogSelect
@@ -346,8 +346,8 @@ function AtomicRoute(props: { api: TuiPluginApi; sessionID: string }) {
           {state.error()
             ? `Atomic error: ${state.error()}`
             : state.loading()
-              ? "Fake Atomic control plane is loading for this session."
-              : "Fake Atomic control plane has no state for this session."}
+              ? "Atomic control plane is loading for this session."
+              : "Atomic control plane has no state for this session."}
         </text>
         <text fg={theme().textMuted}>session: {resolvedSessionID() ?? "<none>"}</text>
         <text fg={theme().textMuted}>worktree: {cwd()}</text>

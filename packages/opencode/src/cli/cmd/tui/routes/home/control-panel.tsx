@@ -425,7 +425,7 @@ export function HomeControlPanel(props: {
                       fallback={
                         <EmptyState
                           title="No attention items"
-                          detail="The fake Atomic dashboard has no urgent items right now."
+                          detail="The Atomic dashboard has no urgent items right now."
                         />
                       }
                     >
@@ -524,7 +524,7 @@ export function HomeControlPanel(props: {
                     fallback={
                       <EmptyState
                         title="No jobs in this filter"
-                        detail="Choose a different tab filter or add more fake work items to bootstrap.json."
+                        detail="Choose a different tab filter or add more work items to bootstrap.json."
                       />
                     }
                   >
