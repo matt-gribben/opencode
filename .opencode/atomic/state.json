@@ -1,0 +1,508 @@
+{
+  "workspaces": {
+    "__default__": {
+      "workspaceID": "__default__",
+      "bootstrappedAt": 1776768786586,
+      "sessionBootstrap": {
+        "id": "fake-atomic-bootstrap",
+        "title": "Atomic-CTRL Fake Session",
+        "description": "Project-local fake control-plane bootstrap used to exercise integration shape.",
+        "source": "fixtures"
+      },
+      "goals": [
+        {
+          "id": "04",
+          "title": "Build a working thesis on AI-native research tooling",
+          "status": "running",
+          "summary": "Shape the working thesis, evidence base, and vendor map for AI-native research tools."
+        },
+        {
+          "id": "03",
+          "title": "Competitive map of autonomous research agents",
+          "status": "running",
+          "summary": "Benchmark autonomous research vendors and identify strongest differentiation."
+        },
+        {
+          "id": "02",
+          "title": "Structured knowledge base of 500 public companies",
+          "status": "review",
+          "summary": "Build the company graph and canonicalize entities across the public filing corpus."
+        },
+        {
+          "id": "01",
+          "title": "Nightly agent evals on held-out research tasks",
+          "status": "completed",
+          "summary": "Continuously validate agent quality against held-out evaluation tasks."
+        }
+      ],
+      "projects": [
+        {
+          "id": "11",
+          "goalId": "04",
+          "title": "Thesis synthesis pipeline",
+          "status": "running",
+          "summary": "Combine primary interviews, memory nodes, and graph evidence into a thesis pipeline."
+        },
+        {
+          "id": "10",
+          "goalId": "04",
+          "title": "Founder and team graph",
+          "status": "running",
+          "summary": "Resolve founders, teams, and supporting entities into a unified graph."
+        },
+        {
+          "id": "09",
+          "goalId": "03",
+          "title": "Autonomous-research vendor map",
+          "status": "running",
+          "summary": "Build the competitive map and score vendor performance."
+        },
+        {
+          "id": "08",
+          "goalId": "03",
+          "title": "Benchmark harness for research agents",
+          "status": "blocked",
+          "summary": "Prepare benchmark harness and held-out tasks for research-agent evaluation."
+        },
+        {
+          "id": "07",
+          "goalId": "02",
+          "title": "10-K ingestion + chunking",
+          "status": "completed",
+          "summary": "Ingest filings and create semantic chunks for downstream extraction."
+        },
+        {
+          "id": "06",
+          "goalId": "02",
+          "title": "Entity resolution for co. graph",
+          "status": "review",
+          "summary": "Resolve company entities, aliases, and subsidiary links across the graph."
+        }
+      ],
+      "objectives": [
+        {
+          "id": "214",
+          "projectId": "11",
+          "title": "Draft H1: AI research tools as the new Bloomberg",
+          "status": "running",
+          "summary": "Produce the main thesis draft from memory and research graph evidence."
+        },
+        {
+          "id": "213",
+          "projectId": "11",
+          "title": "Collect primary interviews — 6 founders",
+          "status": "running",
+          "summary": "Conduct and process founder interviews to support the thesis."
+        },
+        {
+          "id": "212",
+          "projectId": "10",
+          "title": "Resolve founder entities across 4 sources",
+          "status": "review",
+          "summary": "Merge duplicate founders and team entities across multiple source systems."
+        },
+        {
+          "id": "211",
+          "projectId": "09",
+          "title": "Score 42 vendors on 7 criteria",
+          "status": "running",
+          "summary": "Run the vendor scoring pass across all active candidates."
+        },
+        {
+          "id": "210",
+          "projectId": "09",
+          "title": "Price/perf benchmark suite — v2",
+          "status": "blocked",
+          "summary": "Prepare the next price/performance benchmark pass."
+        },
+        {
+          "id": "209",
+          "projectId": "08",
+          "title": "Benchmark harness for research agents",
+          "status": "blocked",
+          "summary": "Stand up the eval harness and prompt pack for held-out evaluation."
+        },
+        {
+          "id": "207",
+          "projectId": "06",
+          "title": "Canonicalize company names across filings",
+          "status": "review",
+          "summary": "Resolve ambiguous company aliases found in the filing corpus."
+        },
+        {
+          "id": "206",
+          "projectId": "06",
+          "title": "Resolve parent/subsidiary hierarchies",
+          "status": "queued",
+          "summary": "Fetch and normalize company hierarchy relationships."
+        }
+      ],
+      "workItems": [
+        {
+          "id": "JOB-7152",
+          "objectiveId": "214",
+          "title": "Synthesize thesis introduction from 14 memory nodes",
+          "status": "running",
+          "summary": "Draft the opening thesis framing from the current synthesized memory graph.",
+          "agent": "writer",
+          "priority": "high",
+          "progress": 62,
+          "steps": 18,
+          "ageLabel": "12m",
+          "etaLabel": "~4m"
+        },
+        {
+          "id": "JOB-7151",
+          "objectiveId": "214",
+          "title": "Identify the 3 strongest counter-arguments",
+          "status": "running",
+          "summary": "Pull the strongest counter-position threads from research memory.",
+          "agent": "analyst",
+          "priority": "high",
+          "progress": 78,
+          "steps": 12,
+          "ageLabel": "18m",
+          "etaLabel": "~2m"
+        },
+        {
+          "id": "JOB-7150",
+          "objectiveId": "213",
+          "title": "Extract follow-up questions from interview #4",
+          "status": "queued",
+          "summary": "Prepare the next analyst follow-up pass from the latest interview transcript.",
+          "agent": "extractor",
+          "priority": "med",
+          "progress": 0,
+          "steps": 0,
+          "ageLabel": "—",
+          "etaLabel": "queued"
+        },
+        {
+          "id": "JOB-7149",
+          "objectiveId": "212",
+          "title": "Merge founder nodes with >0.88 similarity",
+          "status": "review",
+          "summary": "Resolve graph merge candidates with high semantic similarity.",
+          "agent": "graph",
+          "priority": "med",
+          "progress": 100,
+          "steps": 24,
+          "ageLabel": "48m",
+          "etaLabel": "approve",
+          "attentionLabel": "approve"
+        },
+        {
+          "id": "JOB-7148",
+          "objectiveId": "211",
+          "title": "Score Lindy.ai across 7 vendor criteria",
+          "status": "completed",
+          "summary": "Complete the latest vendor scoring pass for Lindy.ai.",
+          "agent": "analyst",
+          "priority": "urgent",
+          "progress": 100,
+          "steps": 14,
+          "ageLabel": "1h",
+          "etaLabel": "done 8m"
+        },
+        {
+          "id": "JOB-7147",
+          "objectiveId": "211",
+          "title": "Score Harvey.ai across 7 vendor criteria",
+          "status": "completed",
+          "summary": "Complete the latest vendor scoring pass for Harvey.ai.",
+          "agent": "analyst",
+          "priority": "urgent",
+          "progress": 100,
+          "steps": 14,
+          "ageLabel": "1h",
+          "etaLabel": "done 6m"
+        },
+        {
+          "id": "JOB-7146",
+          "objectiveId": "211",
+          "title": "Score Hebbia across 7 vendor criteria",
+          "status": "running",
+          "summary": "Continue the in-flight vendor scoring pass for Hebbia.",
+          "agent": "analyst",
+          "priority": "urgent",
+          "progress": 48,
+          "steps": 9,
+          "ageLabel": "22m",
+          "etaLabel": "~3m"
+        },
+        {
+          "id": "JOB-7145",
+          "objectiveId": "209",
+          "title": "Set up eval harness with 8 held-out tasks",
+          "status": "blocked",
+          "summary": "Blocked on missing credits for the next evaluation run.",
+          "agent": "planner",
+          "priority": "high",
+          "progress": 0,
+          "steps": 2,
+          "ageLabel": "—",
+          "etaLabel": "credits",
+          "attentionLabel": "credits"
+        },
+        {
+          "id": "JOB-7144",
+          "objectiveId": "209",
+          "title": "Write 12 multi-hop evaluation prompts",
+          "status": "blocked",
+          "summary": "Prompt authoring is blocked on schema confirmation.",
+          "agent": "writer",
+          "priority": "high",
+          "progress": 15,
+          "steps": 4,
+          "ageLabel": "—",
+          "etaLabel": "schema",
+          "attentionLabel": "schema"
+        },
+        {
+          "id": "JOB-7143",
+          "objectiveId": "207",
+          "title": "Merge Alphabet / Alphabet Inc. / GOOGL",
+          "status": "review",
+          "summary": "Resolve duplicate supplier nodes before the next knowledge sync.",
+          "agent": "graph",
+          "priority": "urgent",
+          "progress": 100,
+          "steps": 32,
+          "ageLabel": "2h",
+          "etaLabel": "approve",
+          "attentionLabel": "approve"
+        },
+        {
+          "id": "JOB-7142",
+          "objectiveId": "207",
+          "title": "Resolve ambiguous supplier names in 10-K filings",
+          "status": "review",
+          "summary": "Human review required because confidence fell below the routing threshold.",
+          "agent": "analyst",
+          "priority": "high",
+          "progress": 92,
+          "steps": 28,
+          "ageLabel": "3h",
+          "etaLabel": "low conf",
+          "attentionLabel": "low conf"
+        },
+        {
+          "id": "JOB-7141",
+          "objectiveId": "206",
+          "title": "Chunk 420 10-Ks with semantic boundaries",
+          "status": "completed",
+          "summary": "Latest indexing pass completed successfully.",
+          "agent": "indexer",
+          "priority": "med",
+          "progress": 100,
+          "steps": 420,
+          "ageLabel": "5h",
+          "etaLabel": "done 48m"
+        },
+        {
+          "id": "JOB-7140",
+          "objectiveId": "206",
+          "title": "Fetch parent/subsidiary table from SEC EDGAR",
+          "status": "queued",
+          "summary": "Queued waiting for the current graph merge review to complete.",
+          "agent": "indexer",
+          "priority": "med",
+          "progress": 0,
+          "steps": 0,
+          "ageLabel": "—",
+          "etaLabel": "queued"
+        },
+        {
+          "id": "JOB-7139",
+          "objectiveId": "210",
+          "title": "Generate H2 outline from research memory",
+          "status": "failed",
+          "summary": "Most recent writer pass failed after a missing environment variable.",
+          "agent": "writer",
+          "priority": "high",
+          "progress": 22,
+          "steps": 8,
+          "ageLabel": "4h",
+          "etaLabel": "retry 2",
+          "attentionLabel": "retry 2"
+        }
+      ],
+      "currentGoalId": "03",
+      "currentProjectId": "09",
+      "currentObjectiveId": "211",
+      "currentWorkItemId": "JOB-7148",
+      "branding": {
+        "enabled": true,
+        "title": "Atomic-CTRL"
+      },
+      "dashboard": {
+        "meta": {
+          "workspaceLabel": "workspace atomic-research",
+          "planLabel": "plan TEAM",
+          "mcpLabel": "mcp connected",
+          "uptimeLabel": "uptime 14d 06h",
+          "regionLabel": "region sfo-1",
+          "commitLabel": "commit 7f9a2c",
+          "versionLabel": "v0.4.2"
+        },
+        "stats": [
+          {
+            "id": "active_jobs",
+            "label": "ACTIVE JOBS",
+            "value": "12",
+            "delta": "+3 today",
+            "sparkline": [
+              8,
+              9,
+              8,
+              10,
+              12,
+              11,
+              13,
+              15,
+              14,
+              16
+            ]
+          },
+          {
+            "id": "jobs_today",
+            "label": "JOBS TODAY",
+            "value": "47",
+            "delta": "+18%",
+            "sparkline": [
+              21,
+              19,
+              24,
+              23,
+              27,
+              30,
+              32,
+              34,
+              35,
+              34
+            ]
+          },
+          {
+            "id": "memory_nodes",
+            "label": "MEMORY NODES",
+            "value": "14.2k",
+            "delta": "+124",
+            "sparkline": [
+              5,
+              8,
+              11,
+              14,
+              18,
+              22,
+              25,
+              27,
+              28,
+              29
+            ]
+          },
+          {
+            "id": "agent_util",
+            "label": "AGENT UTIL",
+            "value": "68%",
+            "delta": "-4%",
+            "sparkline": [
+              40,
+              55,
+              61,
+              44,
+              50,
+              45,
+              41,
+              39,
+              37,
+              38
+            ]
+          }
+        ],
+        "eventStream": [
+          {
+            "id": "evt-1",
+            "timestamp": "12:42:18",
+            "actor": "planner",
+            "message": "decomposed OBJ-214 into 7 jobs (semantic-dedup, graph-materialization, review)"
+          },
+          {
+            "id": "evt-2",
+            "timestamp": "12:38:04",
+            "actor": "indexer",
+            "message": "indexed 1842 chunks from research-24Q4"
+          },
+          {
+            "id": "evt-3",
+            "timestamp": "12:31:22",
+            "actor": "graph",
+            "message": "materialized 84 edges in knowledge.topics / 3 cycles flagged"
+          },
+          {
+            "id": "evt-4",
+            "timestamp": "12:24:09",
+            "actor": "reviewer",
+            "message": "flagged JOB-7142 confidence 0.61 below gate 0.75"
+          },
+          {
+            "id": "evt-5",
+            "timestamp": "12:02:55",
+            "actor": "maya",
+            "message": "approved plan revision for OBJ-118 market sizing"
+          },
+          {
+            "id": "evt-6",
+            "timestamp": "11:41:02",
+            "actor": "writer",
+            "message": "completed draft artifact quarterly-synthesis.md (4230 words)"
+          },
+          {
+            "id": "evt-7",
+            "timestamp": "11:18:33",
+            "actor": "analyst",
+            "message": "ran 12 validation queries vs memory.semantic.financials — all passed"
+          },
+          {
+            "id": "evt-8",
+            "timestamp": "10:55:01",
+            "actor": "system",
+            "message": "scheduled nightly compaction working -> episodic"
+          }
+        ],
+        "attention": [
+          {
+            "id": "JOB-7142",
+            "severity": "high",
+            "title": "Resolve ambiguous supplier names in 10-K filings",
+            "ageLabel": "22m"
+          },
+          {
+            "id": "JOB-7143",
+            "severity": "urgent",
+            "title": "Merge 'Alphabet' / 'Alphabet Inc.' / GOOGL",
+            "ageLabel": "38m"
+          },
+          {
+            "id": "OBJ-118",
+            "severity": "high",
+            "title": "Market sizing — EU autonomous research memory",
+            "ageLabel": "1h"
+          },
+          {
+            "id": "JOB-7149",
+            "severity": "med",
+            "title": "Merge founder nodes with >0.88 similarity",
+            "ageLabel": "2h"
+          },
+          {
+            "id": "JOB-7139",
+            "severity": "high",
+            "title": "Generate H2 outline from research memory",
+            "ageLabel": "4h"
+          }
+        ]
+      }
+    }
+  },
+  "sessions": {}
+}

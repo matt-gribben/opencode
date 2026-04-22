@@ -1,0 +1,517 @@
+{
+  "sessionBootstrap": {
+    "id": "fake-atomic-bootstrap",
+    "title": "Atomic-CTRL Fake Session",
+    "description": "Project-local fake control-plane bootstrap used to exercise integration shape for software engineering work.",
+    "source": "fixtures"
+  },
+  "goals": [
+    {
+      "id": "04",
+      "title": "Ship Atomic-CTRL operator dashboard v1",
+      "status": "running",
+      "summary": "Deliver the start-screen control panel, work management flows, and branded operator UX."
+    },
+    {
+      "id": "03",
+      "title": "Stabilize agent runtime and approval workflows",
+      "status": "running",
+      "summary": "Reduce regressions around prompt lifecycle, approvals, and runtime capability gating."
+    },
+    {
+      "id": "02",
+      "title": "Build durable telemetry and session memory pipeline",
+      "status": "review",
+      "summary": "Capture structured session traces and prepare them for backend parsing and memory ingestion."
+    },
+    {
+      "id": "01",
+      "title": "Nightly regression and eval automation",
+      "status": "completed",
+      "summary": "Keep nightly validations running against held-out tasks and fixture-based dashboards."
+    }
+  ],
+  "projects": [
+    {
+      "id": "11",
+      "goalId": "04",
+      "title": "Home control panel UX",
+      "status": "running",
+      "summary": "Design and implement the operator-facing start screen, tabs, tree views, and actions."
+    },
+    {
+      "id": "10",
+      "goalId": "04",
+      "title": "Atomic work orchestration",
+      "status": "running",
+      "summary": "Connect selected work, objective context, and operator actions into the session lifecycle."
+    },
+    {
+      "id": "09",
+      "goalId": "03",
+      "title": "Runtime permissions and approvals",
+      "status": "running",
+      "summary": "Harden permission overlays, approval queues, and capability grants in the agent loop."
+    },
+    {
+      "id": "08",
+      "goalId": "03",
+      "title": "Regression harness",
+      "status": "blocked",
+      "summary": "Expand fixture-based regression coverage and local validation flows."
+    },
+    {
+      "id": "07",
+      "goalId": "02",
+      "title": "Session event capture",
+      "status": "completed",
+      "summary": "Capture core session and tool execution events into a structured local stream."
+    },
+    {
+      "id": "06",
+      "goalId": "02",
+      "title": "Memory ingestion pipeline",
+      "status": "review",
+      "summary": "Prepare telemetry exports and parsed artifacts for future backend memory ingestion."
+    }
+  ],
+  "objectives": [
+    {
+      "id": "214",
+      "projectId": "11",
+      "title": "Ship the tabbed control panel home screen",
+      "status": "running",
+      "summary": "Replace the splash screen with an operator dashboard and bottom-docked prompt."
+    },
+    {
+      "id": "213",
+      "projectId": "11",
+      "title": "Add expandable goals tree navigation",
+      "status": "running",
+      "summary": "Support hierarchical goal/project/objective browsing with expandable tree state."
+    },
+    {
+      "id": "212",
+      "projectId": "10",
+      "title": "Propagate selected work into new sessions",
+      "status": "review",
+      "summary": "Ensure workspace-selected work and context seed newly created sessions consistently."
+    },
+    {
+      "id": "211",
+      "projectId": "09",
+      "title": "Harden tool approval and permission gating",
+      "status": "running",
+      "summary": "Stabilize fake capability grants, approval prompts, and runtime permission overlays."
+    },
+    {
+      "id": "210",
+      "projectId": "09",
+      "title": "Fix runtime regressions from TUI changes",
+      "status": "blocked",
+      "summary": "Eliminate stale renders, runaway memory use, and other UI-driven regressions."
+    },
+    {
+      "id": "209",
+      "projectId": "08",
+      "title": "Expand local fixture regression harness",
+      "status": "blocked",
+      "summary": "Add broader local regression fixtures for dashboard, approvals, and runtime behavior."
+    },
+    {
+      "id": "207",
+      "projectId": "06",
+      "title": "Map session telemetry into memory-ready events",
+      "status": "review",
+      "summary": "Define the event schema that future backend ingestion can parse into useful memories."
+    },
+    {
+      "id": "206",
+      "projectId": "06",
+      "title": "Upload parsed trajectories to the backend",
+      "status": "queued",
+      "summary": "Prepare the upload path for telemetry artifacts once the real control plane exists."
+    }
+  ],
+  "workItems": [
+    {
+      "id": "JOB-7152",
+      "objectiveId": "214",
+      "title": "Implement dashboard tab chrome and header metrics",
+      "status": "running",
+      "summary": "Build the home control panel header, tabs, and top-level metric cards.",
+      "agent": "writer",
+      "priority": "high",
+      "progress": 62,
+      "steps": 18,
+      "ageLabel": "12m",
+      "etaLabel": "~4m"
+    },
+    {
+      "id": "JOB-7151",
+      "objectiveId": "214",
+      "title": "Render bottom-docked prompt on the new home route",
+      "status": "running",
+      "summary": "Preserve session creation behavior while moving the prompt to the bottom of the dashboard.",
+      "agent": "analyst",
+      "priority": "high",
+      "progress": 78,
+      "steps": 12,
+      "ageLabel": "18m",
+      "etaLabel": "~2m"
+    },
+    {
+      "id": "JOB-7150",
+      "objectiveId": "213",
+      "title": "Wire expandable project tree interactions",
+      "status": "queued",
+      "summary": "Add expand/collapse behavior and row selection for the goals tree tab.",
+      "agent": "extractor",
+      "priority": "med",
+      "progress": 0,
+      "steps": 0,
+      "ageLabel": "—",
+      "etaLabel": "queued"
+    },
+    {
+      "id": "JOB-7149",
+      "objectiveId": "212",
+      "title": "Review session bootstrap from workspace context",
+      "status": "review",
+      "summary": "Confirm that selected dashboard work is consistently inherited by new sessions.",
+      "agent": "graph",
+      "priority": "med",
+      "progress": 100,
+      "steps": 24,
+      "ageLabel": "48m",
+      "etaLabel": "approve",
+      "attentionLabel": "approve"
+    },
+    {
+      "id": "JOB-7148",
+      "objectiveId": "211",
+      "title": "Allow edit permissions under fake grant profile",
+      "status": "completed",
+      "summary": "Validate that edit operations are permitted under the fake Atomic control-plane ruleset.",
+      "agent": "analyst",
+      "priority": "urgent",
+      "progress": 100,
+      "steps": 14,
+      "ageLabel": "1h",
+      "etaLabel": "done 8m"
+    },
+    {
+      "id": "JOB-7147",
+      "objectiveId": "211",
+      "title": "Block web fetch under fake grant profile",
+      "status": "completed",
+      "summary": "Verify that denied capabilities are constrained through the normal permission pipeline.",
+      "agent": "analyst",
+      "priority": "urgent",
+      "progress": 100,
+      "steps": 14,
+      "ageLabel": "1h",
+      "etaLabel": "done 6m"
+    },
+    {
+      "id": "JOB-7146",
+      "objectiveId": "211",
+      "title": "Audit pending tool approval queue behavior",
+      "status": "running",
+      "summary": "Check how approval prompts surface in the TUI and how operator actions feed back into the run loop.",
+      "agent": "analyst",
+      "priority": "urgent",
+      "progress": 48,
+      "steps": 9,
+      "ageLabel": "22m",
+      "etaLabel": "~3m"
+    },
+    {
+      "id": "JOB-7145",
+      "objectiveId": "209",
+      "title": "Set up fixture regression suite for home dashboard",
+      "status": "blocked",
+      "summary": "Blocked until the local fixture assertions and screenshot baselines are defined.",
+      "agent": "planner",
+      "priority": "high",
+      "progress": 0,
+      "steps": 2,
+      "ageLabel": "—",
+      "etaLabel": "credits",
+      "attentionLabel": "credits"
+    },
+    {
+      "id": "JOB-7144",
+      "objectiveId": "209",
+      "title": "Author 12 regression prompts for workflow coverage",
+      "status": "blocked",
+      "summary": "The regression prompt pack is blocked on final event schema and fixture coverage.",
+      "agent": "writer",
+      "priority": "high",
+      "progress": 15,
+      "steps": 4,
+      "ageLabel": "—",
+      "etaLabel": "schema",
+      "attentionLabel": "schema"
+    },
+    {
+      "id": "JOB-7143",
+      "objectiveId": "207",
+      "title": "Merge duplicate tool and event names across telemetry streams",
+      "status": "review",
+      "summary": "Resolve duplicate event labels before the telemetry shape is frozen for backend parsing.",
+      "agent": "graph",
+      "priority": "urgent",
+      "progress": 100,
+      "steps": 32,
+      "ageLabel": "2h",
+      "etaLabel": "approve",
+      "attentionLabel": "approve"
+    },
+    {
+      "id": "JOB-7142",
+      "objectiveId": "207",
+      "title": "Resolve ambiguous event names in session traces",
+      "status": "review",
+      "summary": "Human review required because the inferred event grouping fell below the confidence threshold.",
+      "agent": "analyst",
+      "priority": "high",
+      "progress": 92,
+      "steps": 28,
+      "ageLabel": "3h",
+      "etaLabel": "low conf",
+      "attentionLabel": "low conf"
+    },
+    {
+      "id": "JOB-7141",
+      "objectiveId": "206",
+      "title": "Serialize 420 local session traces into memory-ready chunks",
+      "status": "completed",
+      "summary": "Latest local telemetry export completed successfully with chunked trace artifacts.",
+      "agent": "indexer",
+      "priority": "med",
+      "progress": 100,
+      "steps": 420,
+      "ageLabel": "5h",
+      "etaLabel": "done 48m"
+    },
+    {
+      "id": "JOB-7140",
+      "objectiveId": "206",
+      "title": "Upload parsed trajectory batch to the backend adapter",
+      "status": "queued",
+      "summary": "Queued until the real backend adapter contract is finalized.",
+      "agent": "indexer",
+      "priority": "med",
+      "progress": 0,
+      "steps": 0,
+      "ageLabel": "—",
+      "etaLabel": "queued"
+    },
+    {
+      "id": "JOB-7139",
+      "objectiveId": "210",
+      "title": "Recover from runaway memory usage in TUI refresh loop",
+      "status": "failed",
+      "summary": "The last refresh strategy caused runaway memory use and needs a safer repaint path.",
+      "agent": "writer",
+      "priority": "high",
+      "progress": 22,
+      "steps": 8,
+      "ageLabel": "4h",
+      "etaLabel": "retry 2",
+      "attentionLabel": "retry 2"
+    }
+  ],
+  "authorizedSkills": [
+    "github:github",
+    "github:gh-fix-ci"
+  ],
+  "capabilityGrants": [
+    {
+      "id": "grant-edit",
+      "title": "Edit files",
+      "permission": "edit",
+      "pattern": "*",
+      "action": "allow"
+    },
+    {
+      "id": "grant-bash",
+      "title": "Shell access",
+      "permission": "bash",
+      "pattern": "*",
+      "action": "ask",
+      "note": "Fake control plane requires review for shell commands."
+    },
+    {
+      "id": "grant-webfetch",
+      "title": "Web fetch",
+      "permission": "webfetch",
+      "pattern": "*",
+      "action": "deny",
+      "note": "Disabled in the fake profile to exercise real runtime gating."
+    },
+    {
+      "id": "grant-task",
+      "title": "Subagents",
+      "permission": "task",
+      "pattern": "*",
+      "action": "allow"
+    }
+  ],
+  "humanApprovalsQueue": [
+    {
+      "id": "approval-release-note",
+      "title": "Approve release note wording for dashboard launch",
+      "summary": "Human review required before the operator dashboard summary is shared outside the team.",
+      "status": "pending"
+    },
+    {
+      "id": "approval-risk-check",
+      "title": "Approve risk callout for fake control-plane mode",
+      "summary": "Operator should confirm the fake-control-plane warning copy before closing the implementation task.",
+      "status": "pending"
+    }
+  ],
+  "failedWorkList": [
+    {
+      "id": "failed-ci-dryrun",
+      "title": "Typecheck dry run failed in dashboard branch",
+      "summary": "The previous verification pass reported a compile error in the custom home route.",
+      "status": "failed"
+    }
+  ],
+  "defaults": {
+    "goalId": "04",
+    "projectId": "11",
+    "objectiveId": "214",
+    "workItemId": "JOB-7152"
+  },
+  "branding": {
+    "enabled": true,
+    "title": "Atomic-CTRL"
+  },
+  "dashboard": {
+    "meta": {
+      "workspaceLabel": "workspace atomic-ctrl",
+      "planLabel": "plan DASHBOARD",
+      "mcpLabel": "mcp connected",
+      "uptimeLabel": "uptime 14d 06h",
+      "regionLabel": "region sfo-1",
+      "commitLabel": "commit 7f9a2c",
+      "versionLabel": "v0.4.2"
+    },
+    "stats": [
+      {
+        "id": "active_jobs",
+        "label": "ACTIVE JOBS",
+        "value": "12",
+        "delta": "+3 today",
+        "sparkline": [8, 9, 8, 10, 12, 11, 13, 15, 14, 16]
+      },
+      {
+        "id": "jobs_today",
+        "label": "JOBS TODAY",
+        "value": "47",
+        "delta": "+18%",
+        "sparkline": [21, 19, 24, 23, 27, 30, 32, 34, 35, 34]
+      },
+      {
+        "id": "memory_nodes",
+        "label": "MEMORY NODES",
+        "value": "14.2k",
+        "delta": "+124",
+        "sparkline": [5, 8, 11, 14, 18, 22, 25, 27, 28, 29]
+      },
+      {
+        "id": "agent_util",
+        "label": "AGENT UTIL",
+        "value": "68%",
+        "delta": "-4%",
+        "sparkline": [40, 55, 61, 44, 50, 45, 41, 39, 37, 38]
+      }
+    ],
+    "eventStream": [
+      {
+        "id": "evt-1",
+        "timestamp": "12:42:18",
+        "actor": "planner",
+        "message": "decomposed OBJ-214 into 7 engineering tasks (tabs, metrics, prompt dock, tree, docs, tests, polish)"
+      },
+      {
+        "id": "evt-2",
+        "timestamp": "12:38:04",
+        "actor": "indexer",
+        "message": "indexed 1842 session events from local telemetry capture"
+      },
+      {
+        "id": "evt-3",
+        "timestamp": "12:31:22",
+        "actor": "graph",
+        "message": "materialized 84 edges in tool and event dependency graph / 3 cycles flagged"
+      },
+      {
+        "id": "evt-4",
+        "timestamp": "12:24:09",
+        "actor": "reviewer",
+        "message": "flagged JOB-7142 event-name confidence 0.61 below gate 0.75"
+      },
+      {
+        "id": "evt-5",
+        "timestamp": "12:02:55",
+        "actor": "maya",
+        "message": "approved plan revision for control panel rollout"
+      },
+      {
+        "id": "evt-6",
+        "timestamp": "11:41:02",
+        "actor": "writer",
+        "message": "completed draft artifact home-control-panel.md (4230 words)"
+      },
+      {
+        "id": "evt-7",
+        "timestamp": "11:18:33",
+        "actor": "analyst",
+        "message": "ran 12 validation queries vs session telemetry schema — all passed"
+      },
+      {
+        "id": "evt-8",
+        "timestamp": "10:55:01",
+        "actor": "system",
+        "message": "scheduled nightly regression run for home dashboard + permission flows"
+      }
+    ],
+    "attention": [
+      {
+        "id": "JOB-7142",
+        "severity": "high",
+        "title": "Resolve ambiguous event names in session traces",
+        "ageLabel": "22m"
+      },
+      {
+        "id": "JOB-7143",
+        "severity": "urgent",
+        "title": "Merge duplicate tool and event names across telemetry streams",
+        "ageLabel": "38m"
+      },
+      {
+        "id": "OBJ-118",
+        "severity": "high",
+        "title": "Finalize home control panel rollout scope",
+        "ageLabel": "1h"
+      },
+      {
+        "id": "JOB-7149",
+        "severity": "med",
+        "title": "Review session bootstrap from workspace context",
+        "ageLabel": "2h"
+      },
+      {
+        "id": "JOB-7139",
+        "severity": "high",
+        "title": "Recover from runaway memory usage in TUI refresh loop",
+        "ageLabel": "4h"
+      }
+    ]
+  }
+}

@@ -29,3 +29,6 @@ UPCOMING_CHANGELOG.md
 logs/
 *.bun-build
 tsconfig.tsbuildinfo
+.claude/rules/lean-ctx.md
+LEAN-CTX.md
+.cursorrules

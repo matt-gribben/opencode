@@ -49,6 +49,7 @@ import { InstanceState } from "@/effect"
 import { TaskTool, type TaskPromptOps } from "@/tool/task"
 import { SessionRunState } from "./run-state"
 import { EffectBridge } from "@/effect"
+import * as AtomicCtrl from "@/atomic-ctrl"
 
 // @ts-ignore
 globalThis.AI_SDK_LOG_WARNINGS = false
@@ -1401,6 +1402,23 @@ NOTE: At any point in time through this workflow you should feel free to ask the
           const maxSteps = agent.steps ?? Infinity
           const isLastStep = step >= maxSteps
           msgs = yield* insertReminders({ messages: msgs, agent, session })
+          const atomic = yield* Effect.tryPromise({
+            try: () => AtomicCtrl.getSessionState(ctx.worktree, sessionID),
+            catch: (error) => error,
+          }).pipe(
+            Effect.catch((error) => {
+              const message = error instanceof Error ? error.message : String(error)
+              return bus
+                .publish(Session.Event.Error, {
+                  sessionID,
+                  error: new NamedError.Unknown({
+                    message: `Failed to load fake Atomic control-plane state: ${message}`,
+                  }).toObject(),
+                })
+                .pipe(Effect.as(undefined))
+            }),
+          )
+          const runtimePermission = Permission.merge(session.permission ?? [], atomic ? AtomicCtrl.toPermissionRules(atomic) : [])
 
           const msg: MessageV2.Assistant = {
             id: MessageID.ascending(),
@@ -1476,13 +1494,13 @@ NOTE: At any point in time through this workflow you should feel free to ask the
               instruction.system().pipe(Effect.orDie),
               MessageV2.toModelMessagesEffect(msgs, model),
             ])
-            const system = [...env, ...(skills ? [skills] : []), ...instructions]
+            const system = [...env, ...(atomic ? [AtomicCtrl.toSystemPrompt(atomic)] : []), ...(skills ? [skills] : []), ...instructions]
             const format = lastUser.format ?? { type: "text" as const }
             if (format.type === "json_schema") system.push(STRUCTURED_OUTPUT_SYSTEM_PROMPT)
             const result = yield* handle.process({
               user: lastUser,
               agent,
-              permission: session.permission,
+              permission: runtimePermission,
               sessionID,
               parentSessionID: session.parentID,
               system,

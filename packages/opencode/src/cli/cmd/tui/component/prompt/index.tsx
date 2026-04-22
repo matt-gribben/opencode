@@ -42,6 +42,7 @@ import { DialogSkill } from "../dialog-skill"
 import { DialogWorkspaceCreate, restoreWorkspaceSession } from "../dialog-workspace-create"
 import { DialogWorkspaceUnavailable } from "../dialog-workspace-unavailable"
 import { useArgs } from "@tui/context/args"
+import * as AtomicCtrl from "@/atomic-ctrl"
 
 export type PromptProps = {
   sessionID?: string
@@ -694,6 +695,12 @@ export function Prompt(props: PromptProps) {
       }
 
       sessionID = res.data.id
+
+      await AtomicCtrl.bootstrapSessionFromWorkspace(
+        project.instance.path().worktree || project.instance.directory() || sdk.directory || process.cwd(),
+        props.workspaceID,
+        sessionID,
+      ).catch(() => undefined)
     }
 
     const messageID = MessageID.ascending()
