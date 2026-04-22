@@ -14,6 +14,7 @@ import { Deferred, Effect, Layer, Schema, Context } from "effect"
 import os from "os"
 import { evaluate as evalRule } from "./evaluate"
 import { PermissionID } from "./schema"
+import * as LocalTelemetry from "@/telemetry/local-stream"
 
 const log = Log.create({ service: "permission" })
 
@@ -180,12 +181,24 @@ export const layer = Layer.effect(
     const ask = Effect.fn("Permission.ask")(function* (input: AskInput) {
       const { approved, pending } = yield* InstanceState.get(state)
       const { ruleset, ...request } = input
+      const requestID = request.id ?? PermissionID.ascending()
       let needsAsk = false
 
       for (const pattern of request.patterns) {
         const rule = evaluate(request.permission, pattern, ruleset, approved)
         log.info("evaluated", { permission: request.permission, pattern, action: rule })
         if (rule.action === "deny") {
+          yield* bus.publish(LocalTelemetry.Event.PermissionResolved, {
+            sessionID: request.sessionID,
+            requestID: String(requestID),
+            permission: request.permission,
+            patterns: [...request.patterns],
+            decision: "deny",
+            source: "ruleset",
+            messageID: request.tool?.messageID,
+            toolCallID: request.tool?.callID,
+            metadata: request.metadata,
+          })
           return yield* new DeniedError({
             ruleset: ruleset.filter((rule) => Wildcard.match(request.permission, rule.permission)),
           })
@@ -194,22 +207,34 @@ export const layer = Layer.effect(
         needsAsk = true
       }
 
-      if (!needsAsk) return
+      if (!needsAsk) {
+        yield* bus.publish(LocalTelemetry.Event.PermissionResolved, {
+          sessionID: request.sessionID,
+          requestID: String(requestID),
+          permission: request.permission,
+          patterns: [...request.patterns],
+          decision: "allow",
+          source: "ruleset",
+          messageID: request.tool?.messageID,
+          toolCallID: request.tool?.callID,
+          metadata: request.metadata,
+        })
+        return
+      }
 
-      const id = request.id ?? PermissionID.ascending()
       const info = Schema.decodeUnknownSync(Request)({
-        id,
+        id: requestID,
         ...request,
       })
-      log.info("asking", { id, permission: info.permission, patterns: info.patterns })
+      log.info("asking", { id: requestID, permission: info.permission, patterns: info.patterns })
 
       const deferred = yield* Deferred.make<void, RejectedError | CorrectedError>()
-      pending.set(id, { info, deferred })
+      pending.set(requestID, { info, deferred })
       yield* bus.publish(Event.Asked, info)
       return yield* Effect.ensuring(
         Deferred.await(deferred),
         Effect.sync(() => {
-          pending.delete(id)
+          pending.delete(requestID)
         }),
       )
     })
@@ -225,6 +250,17 @@ export const layer = Layer.effect(
         requestID: existing.info.id,
         reply: input.reply,
       })
+      yield* bus.publish(LocalTelemetry.Event.PermissionResolved, {
+        sessionID: existing.info.sessionID,
+        requestID: String(existing.info.id),
+        permission: existing.info.permission,
+        patterns: [...existing.info.patterns],
+        decision: input.reply,
+        source: "reply",
+        messageID: existing.info.tool?.messageID,
+        toolCallID: existing.info.tool?.callID,
+        metadata: existing.info.metadata,
+      })
 
       if (input.reply === "reject") {
         yield* Deferred.fail(
@@ -239,6 +275,17 @@ export const layer = Layer.effect(
             sessionID: item.info.sessionID,
             requestID: item.info.id,
             reply: "reject",
+          })
+          yield* bus.publish(LocalTelemetry.Event.PermissionResolved, {
+            sessionID: item.info.sessionID,
+            requestID: String(item.info.id),
+            permission: item.info.permission,
+            patterns: [...item.info.patterns],
+            decision: "reject",
+            source: "reply",
+            messageID: item.info.tool?.messageID,
+            toolCallID: item.info.tool?.callID,
+            metadata: item.info.metadata,
           })
           yield* Deferred.fail(item.deferred, new RejectedError())
         }

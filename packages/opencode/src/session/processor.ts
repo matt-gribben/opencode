@@ -20,6 +20,7 @@ import { Question } from "@/question"
 import { errorMessage } from "@/util/error"
 import { Log } from "@/util"
 import { isRecord } from "@/util/record"
+import * as LocalTelemetry from "@/telemetry/local-stream"
 
 const DOOM_LOOP_THRESHOLD = 3
 const log = Log.create({ service: "session.processor" })
@@ -540,6 +541,18 @@ export const layer: Layer.Layer<
         slog.info("process")
         ctx.needsCompaction = false
         ctx.shouldBreak = (yield* config.get()).experimental?.continue_loop_on_deny !== true
+        let finishStatus: "completed" | "error" | "aborted" = "completed"
+        yield* bus.publish(LocalTelemetry.Event.ModelRequestStarted, {
+          sessionID: ctx.sessionID,
+          workspaceID: undefined,
+          turnID: streamInput.user.id,
+          runID: ctx.assistantMessage.id,
+          messageID: ctx.assistantMessage.id,
+          providerID: streamInput.model.providerID,
+          modelID: streamInput.model.id,
+          agent: streamInput.agent.name,
+          toolCount: Object.keys(streamInput.tools).length,
+        })
 
         return yield* Effect.gen(function* () {
           yield* Effect.gen(function* () {
@@ -556,6 +569,7 @@ export const layer: Layer.Layer<
             Effect.onInterrupt(() =>
               Effect.gen(function* () {
                 aborted = true
+                finishStatus = "aborted"
                 if (!ctx.assistantMessage.error) {
                   yield* halt(new DOMException("Aborted", "AbortError"))
                 }
@@ -574,12 +588,32 @@ export const layer: Layer.Layer<
                     attempt: info.attempt,
                     message: info.message,
                     next: info.next,
-                  }),
+                }),
               }),
             ),
-            Effect.catch(halt),
+            Effect.catch((error) =>
+              Effect.gen(function* () {
+                finishStatus = "error"
+                yield* halt(error)
+              }),
+            ),
             Effect.ensuring(cleanup()),
           )
+
+          yield* bus.publish(LocalTelemetry.Event.ModelRequestFinished, {
+            sessionID: ctx.sessionID,
+            workspaceID: undefined,
+            turnID: streamInput.user.id,
+            runID: ctx.assistantMessage.id,
+            messageID: ctx.assistantMessage.id,
+            providerID: streamInput.model.providerID,
+            modelID: streamInput.model.id,
+            status: finishStatus,
+            finishReason: ctx.assistantMessage.finish,
+            blocked: ctx.blocked,
+            needsCompaction: ctx.needsCompaction,
+            hasError: Boolean(ctx.assistantMessage.error),
+          })
 
           if (ctx.needsCompaction) return "compact"
           if (ctx.blocked || ctx.assistantMessage.error) return "stop"

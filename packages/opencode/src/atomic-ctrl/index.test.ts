@@ -2,6 +2,7 @@ import { afterEach, describe, expect, test } from "bun:test"
 import { mkdir, mkdtemp, rm } from "fs/promises"
 import os from "os"
 import path from "path"
+import { GlobalBus } from "@/bus/global"
 import { Filesystem } from "@/util"
 import {
   bootstrapSession,
@@ -112,6 +113,42 @@ describe("atomic-ctrl fake control plane", () => {
     expect(session?.currentGoalId).toBe("goal-a")
     expect(session?.currentProjectId).toBe("project-a")
     expect(session?.currentWorkItemId).toBe("work-b")
+  })
+
+  test("workspace bootstrap overrides stale default session selection", async () => {
+    const worktree = await tempWorktree()
+    await Filesystem.writeJson(paths(worktree).bootstrap, sample)
+
+    await bootstrapSession(worktree, "session-stale")
+    await selectWorkspaceWorkItem(worktree, "workspace-seed", "work-b")
+
+    const session = await bootstrapSessionFromWorkspace(worktree, "workspace-seed", "session-stale")
+    expect(session?.currentGoalId).toBe("goal-a")
+    expect(session?.currentProjectId).toBe("project-a")
+    expect(session?.currentObjectiveId).toBe("obj-a")
+    expect(session?.currentWorkItemId).toBe("work-b")
+  })
+
+  test("work item selection emits transition telemetry", async () => {
+    const worktree = await tempWorktree()
+    await Filesystem.writeJson(paths(worktree).bootstrap, sample)
+
+    const seen: any[] = []
+    const listener = (event: any) => {
+      if (event.payload?.type === "atomic.telemetry.fake_work_item_transitioned") seen.push(event)
+    }
+    GlobalBus.on("event", listener)
+    try {
+      await bootstrapSession(worktree, "session-telemetry")
+      await selectWorkItem(worktree, "session-telemetry", "work-b")
+    } finally {
+      GlobalBus.off("event", listener)
+    }
+
+    expect(seen).toHaveLength(1)
+    expect(seen[0]?.payload?.properties?.previous?.workItemId).toBe("work-a")
+    expect(seen[0]?.payload?.properties?.next?.workItemId).toBe("work-b")
+    expect(seen[0]?.payload?.properties?.scope).toBe("session")
   })
 
   test("dashboard view model derives filter counts from work item state", () => {

@@ -38,6 +38,7 @@ import { Tool } from "@/tool"
 import { Permission } from "@/permission"
 import { SessionStatus } from "./status"
 import { LLM } from "./llm"
+import * as LocalTelemetry from "@/telemetry/local-stream"
 import { Shell } from "@/shell/shell"
 import { AppFileSystem } from "@opencode-ai/shared/filesystem"
 import { Truncate } from "@/tool"
@@ -1495,6 +1496,28 @@ NOTE: At any point in time through this workflow you should feel free to ask the
               MessageV2.toModelMessagesEffect(msgs, model),
             ])
             const system = [...env, ...(atomic ? [AtomicCtrl.toSystemPrompt(atomic)] : []), ...(skills ? [skills] : []), ...instructions]
+            yield* bus.publish(LocalTelemetry.Event.ContextInjectionApplied, {
+              sessionID,
+              workspaceID: session.workspaceID,
+              turnID: lastUser.id,
+              runID: msg.id,
+              messageID: msg.id,
+              agent: agent.name,
+              systemCount: system.length,
+              instructionCount: instructions.length,
+              hasAtomic: Boolean(atomic),
+              hasSkills: Boolean(skills),
+            })
+            yield* bus.publish(LocalTelemetry.Event.FakeCapabilityRefreshed, {
+              sessionID,
+              workspaceID: session.workspaceID,
+              turnID: lastUser.id,
+              runID: msg.id,
+              messageID: msg.id,
+              grantCount: atomic?.capabilityGrants.length ?? 0,
+              authorizedSkillsCount: atomic?.authorizedSkills.length ?? 0,
+              permissionCount: runtimePermission.length,
+            })
             const format = lastUser.format ?? { type: "text" as const }
             if (format.type === "json_schema") system.push(STRUCTURED_OUTPUT_SYSTEM_PROMPT)
             const result = yield* handle.process({

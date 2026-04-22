@@ -440,7 +440,7 @@ const tui: TuiPlugin = async (api) => {
 
   api.command.register(() => {
     const sessionID = currentSessionID(api)
-    const enabled = !!sessionID && atomicEnabled(api)
+    const enabled = atomicEnabled(api)
     return [
       {
         title: "Atomic-CTRL",
@@ -448,8 +448,7 @@ const tui: TuiPlugin = async (api) => {
         category: "Atomic",
         hidden: !enabled,
         onSelect() {
-          if (!sessionID) return
-          api.route.navigate("atomic-ctrl", { sessionID })
+          api.route.navigate("home")
         },
       },
       {

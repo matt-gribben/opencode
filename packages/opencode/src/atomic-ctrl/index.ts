@@ -1,5 +1,6 @@
 import { Flock } from "@opencode-ai/shared/util/flock"
 import { Permission } from "@/permission"
+import { emitGlobalEvent } from "@/telemetry/local-stream"
 import { Filesystem } from "@/util"
 import path from "path"
 import { existsSync, readFileSync } from "fs"
@@ -394,7 +395,19 @@ export function getWorkspaceStateSync(worktree: string, workspaceID?: string | n
 }
 
 export async function selectWorkspaceWorkItem(worktree: string, workspaceID: string | undefined, workItemID: string) {
-  return mutateWorkspace(worktree, workspaceID, async (state) => {
+  let previous = {
+    goalId: undefined as string | undefined,
+    projectId: undefined as string | undefined,
+    objectiveId: undefined as string | undefined,
+    workItemId: undefined as string | undefined,
+  }
+  const result = await mutateWorkspace(worktree, workspaceID, async (state) => {
+    previous = {
+      goalId: state.currentGoalId,
+      projectId: state.currentProjectId,
+      objectiveId: state.currentObjectiveId,
+      workItemId: state.currentWorkItemId,
+    }
     const next = state.workItems.find((item) => item.id === workItemID)
     if (!next) throw new Error(`Unknown work item: ${workItemID}`)
     state.currentWorkItemId = next.id
@@ -409,6 +422,25 @@ export async function selectWorkspaceWorkItem(worktree: string, workspaceID: str
     }
     return state
   })
+  if (result) {
+    emitGlobalEvent({
+      directory: worktree,
+      workspaceID,
+      type: "atomic.telemetry.fake_work_item_transitioned",
+      properties: {
+        workspaceID,
+        scope: "workspace",
+        previous,
+        next: {
+          goalId: result.currentGoalId,
+          projectId: result.currentProjectId,
+          objectiveId: result.currentObjectiveId,
+          workItemId: result.currentWorkItemId,
+        },
+      },
+    })
+  }
+  return result
 }
 
 export async function selectWorkspaceContext(
@@ -416,7 +448,19 @@ export async function selectWorkspaceContext(
   workspaceID: string | undefined,
   input: { goalId?: string; projectId?: string; objectiveId?: string },
 ) {
-  return mutateWorkspace(worktree, workspaceID, async (state) => {
+  let previous = {
+    goalId: undefined as string | undefined,
+    projectId: undefined as string | undefined,
+    objectiveId: undefined as string | undefined,
+    workItemId: undefined as string | undefined,
+  }
+  const result = await mutateWorkspace(worktree, workspaceID, async (state) => {
+    previous = {
+      goalId: state.currentGoalId,
+      projectId: state.currentProjectId,
+      objectiveId: state.currentObjectiveId,
+      workItemId: state.currentWorkItemId,
+    }
     if (input.goalId) {
       const goal = state.goals.find((item) => item.id === input.goalId)
       if (!goal) throw new Error(`Unknown goal: ${input.goalId}`)
@@ -447,6 +491,25 @@ export async function selectWorkspaceContext(
 
     return state
   })
+  if (result) {
+    emitGlobalEvent({
+      directory: worktree,
+      workspaceID,
+      type: "atomic.telemetry.fake_work_item_transitioned",
+      properties: {
+        workspaceID,
+        scope: "workspace",
+        previous,
+        next: {
+          goalId: result.currentGoalId,
+          projectId: result.currentProjectId,
+          objectiveId: result.currentObjectiveId,
+          workItemId: result.currentWorkItemId,
+        },
+      },
+    })
+  }
+  return result
 }
 
 export async function bootstrapSessionFromWorkspace(worktree: string, workspaceID: string | undefined, sessionID: string) {
@@ -458,14 +521,15 @@ export async function bootstrapSessionFromWorkspace(worktree: string, workspaceI
     const store = await readStore(file)
     const workspaceKey = normalizeWorkspaceID(workspaceID)
     const workspace = store.workspaces[workspaceKey] ?? fromBootstrapWorkspace(workspaceID, bootstrap)
-    const session =
-      store.sessions[sessionID] ??
-      fromBootstrapSession(sessionID, bootstrap, {
-        goalId: workspace.currentGoalId,
-        projectId: workspace.currentProjectId,
-        objectiveId: workspace.currentObjectiveId,
-        workItemId: workspace.currentWorkItemId,
-      })
+    const session = store.sessions[sessionID] ?? fromBootstrapSession(sessionID, bootstrap)
+
+    // Home-dashboard workspace state is the source of truth for newly created
+    // sessions. Apply it even if the session already has default fake Atomic
+    // state, so an earlier read cannot lock in stale defaults.
+    session.currentGoalId = workspace.currentGoalId
+    session.currentProjectId = workspace.currentProjectId
+    session.currentObjectiveId = workspace.currentObjectiveId
+    session.currentWorkItemId = workspace.currentWorkItemId
 
     store.workspaces[workspaceKey] = workspace
     store.sessions[sessionID] = session
@@ -506,7 +570,19 @@ export async function listAvailableWork(worktree: string, sessionID: string) {
 }
 
 export async function selectWorkItem(worktree: string, sessionID: string, workItemID: string) {
-  return mutateSession(worktree, sessionID, async (state) => {
+  let previous = {
+    goalId: undefined as string | undefined,
+    projectId: undefined as string | undefined,
+    objectiveId: undefined as string | undefined,
+    workItemId: undefined as string | undefined,
+  }
+  const result = await mutateSession(worktree, sessionID, async (state) => {
+    previous = {
+      goalId: state.currentGoalId,
+      projectId: state.currentProjectId,
+      objectiveId: state.currentObjectiveId,
+      workItemId: state.currentWorkItemId,
+    }
     const next = state.workItems.find((item) => item.id === workItemID)
     if (!next) throw new Error(`Unknown work item: ${workItemID}`)
     state.currentWorkItemId = next.id
@@ -521,6 +597,24 @@ export async function selectWorkItem(worktree: string, sessionID: string, workIt
     }
     return state
   })
+  if (result) {
+    emitGlobalEvent({
+      directory: worktree,
+      type: "atomic.telemetry.fake_work_item_transitioned",
+      properties: {
+        sessionID,
+        scope: "session",
+        previous,
+        next: {
+          goalId: result.currentGoalId,
+          projectId: result.currentProjectId,
+          objectiveId: result.currentObjectiveId,
+          workItemId: result.currentWorkItemId,
+        },
+      },
+    })
+  }
+  return result
 }
 
 export async function approveItem(worktree: string, sessionID: string, approvalID: string) {
